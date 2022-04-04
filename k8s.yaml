@@ -1,0 +1,119 @@
+# product
+apiVersion: v1
+kind: Service
+metadata:
+  name: product
+  labels:
+    app: product
+    service: product
+spec:
+  ports:
+  - port: 8080
+    name: http
+  selector:
+    app: product
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: product-v1
+  labels:
+    app: product
+    version: v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: product
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: product
+        version: v1
+    spec:
+      containers:
+      - name: product
+        image: jk82421/product:v1
+        imagePullPolicy: Always
+        env:
+        - name: REVIEW_END_POINT
+          value: "review"
+        ports:
+        - containerPort: 8080
+        securityContext:
+          runAsUser: 1000
+---
+
+
+# Review
+apiVersion: v1
+kind: Service
+metadata:
+  name: review
+  labels:
+    app: review
+    service: review
+spec:
+  ports:
+  - port: 80
+    targetPort: 8080
+    name: http
+  selector:
+    app: review
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: review-v1
+  labels:
+    app: review
+    version: v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: review
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: review
+        version: v1
+    spec:
+      containers:
+      - name: review
+        image: jk82421/review:v1
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+        securityContext:
+          runAsUser: 1000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: review-v2
+  labels:
+    app: review
+    version: v2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: review
+      version: v2
+  template:
+    metadata:
+      labels:
+        app: review
+        version: v2
+    spec:
+      containers:
+      - name: review
+        image: jk82421/review:v2
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+        securityContext:
+          runAsUser: 1000
