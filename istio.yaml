@@ -32,6 +32,32 @@ spec:
     - destination:
         host: review
         subset: v2
+  - match:
+    - headers:
+        version:
+          exact: all
+    route:
+    - destination:
+        host: review
+        subset: v1
+      weight: 50
+    - destination:
+        host: review
+        subset: v2
+      weight: 50
+  - match:
+    - headers:
+        version:
+          exact: v2-most
+    route:
+    - destination:
+        host: review
+        subset: v1
+      weight: 10
+    - destination:
+        host: review
+        subset: v2
+      weight: 90
   - route:
     - destination:
         host: review

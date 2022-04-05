@@ -1,19 +1,24 @@
 package feature
 
 import (
-	"fmt"
 	"os"
+
+	"github.com/gin-gonic/gin"
 )
+
+type Product struct {
+}
+
+type ProductService interface {
+	GetProduct(c *gin.Context, payload GetProductReq) (res GetProductRes, err error)
+}
 
 var reviewEndPoint string
 
 func init() {
-	reviewEndPoint = fmt.Sprintf("http://%s", os.Getenv("REVIEW_END_POINT"))
+	reviewEndPoint = os.Getenv("REVIEW_END_POINT")
 }
 
-type ProductServer struct {
-}
-
-func NewProductServer() *ProductServer {
-	return &ProductServer{}
+func NewProduct() *Product {
+	return &Product{}
 }

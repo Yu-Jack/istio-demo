@@ -1,6 +1,7 @@
 rebuild-product:
 	docker rmi jk82421/product:v1
 	docker build services/product/ -t jk82421/product:v1
+	docker push jk82421/product:v1
 
 rebuild-review-v1:
 	docker rmi jk82421/review:v1
